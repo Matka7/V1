@@ -1,0 +1,345 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/Content/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+    
+    <style>
+        body {
+            padding-top: 50px;
+            position: relative;
+        }
+
+        pre {
+            tab-size: 8;
+        }
+
+        @media screen and (max-width: 768px) {
+            .side-collapse-container {
+                width: 100%;
+                position: relative;
+                left: 0;
+                transition: left .4s;
+            }
+
+                .side-collapse-container.out {
+                    left: 200px;
+                }
+
+            .side-collapse {
+                top: 50px;
+                bottom: 0;
+                left: 0;
+                width: 200px;
+                position: fixed;
+                overflow: hidden;
+                transition: width .4s;
+            }
+
+                .side-collapse.in {
+                    width: 0;
+                }
+        }
+
+        table td {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .wrapper {
+            text-transform: uppercase;
+            color: #555;
+            cursor: help;
+            font-size: 20px;
+            position: relative;
+            text-align: center;
+            -webkit-transform: translateZ(0); /* webkit flicker fix */
+            -webkit-font-smoothing: antialiased; /* webkit text rendering fix */
+        }
+
+            .wrapper .tooltip {
+                background: #1496bb;
+                bottom: 100%;
+                color: #fff;
+                display: block;
+                left: -25px;
+                margin-bottom: 15px;
+                opacity: 0;
+                padding: 20px;
+                pointer-events: none;
+                position: absolute;
+                width: 100%;
+                -webkit-transform: translateY(10px);
+                -moz-transform: translateY(10px);
+                -ms-transform: translateY(10px);
+                -o-transform: translateY(10px);
+                transform: translateY(10px);
+                -webkit-transition: all .25s ease-out;
+                -moz-transition: all .25s ease-out;
+                -ms-transition: all .25s ease-out;
+                -o-transition: all .25s ease-out;
+                transition: all .25s ease-out;
+                -webkit-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+                -moz-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+                -ms-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+                -o-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+                box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+            }
+
+                /* This bridges the gap so you can mouse into the tooltip without it disappearing */
+                .wrapper .tooltip:before {
+                    bottom: -20px;
+                    content: " ";
+                    display: block;
+                    height: 20px;
+                    left: 0;
+                    position: absolute;
+                    width: 100%;
+                }
+
+                /* CSS Triangles - see Trevor's post */
+                .wrapper .tooltip:after {
+                    border-left: solid transparent 10px;
+                    border-right: solid transparent 10px;
+                    border-top: solid #1496bb 10px;
+                    bottom: -10px;
+                    content: " ";
+                    height: 0;
+                    left: 50%;
+                    margin-left: -13px;
+                    position: absolute;
+                    width: 0;
+                }
+
+            .wrapper:hover .tooltip {
+                opacity: 1;
+                pointer-events: auto;
+                -webkit-transform: translateY(0px);
+                -moz-transform: translateY(0px);
+                -ms-transform: translateY(0px);
+                -o-transform: translateY(0px);
+                transform: translateY(0px);
+            }
+
+        /* IE can just show/hide with no transition */
+        .lte8 .wrapper .tooltip {
+            display: none;
+        }
+
+        .lte8 .wrapper:hover .tooltip {
+            display: block;
+        }
+        .modal-header{
+            background-color:#101010;
+        }
+    </style>
+</head>
+<body>
+    <header role="banner" class="navbar navbar-fixed-top navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button data-toggle="collapse-side" data-target=".side-collapse" data-target-2=".side-collapse-container" type="button" class="navbar-toggle pull-left"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            </div>
+            <div class="navbar-inverse side-collapse in">
+                <nav role="navigation" class="navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="">Bids</a></li>
+                        <li><a href="">Bid History</a></li>
+                        <li><a href="">Account</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div style="text-align:right;">
+                <time datetime="DD-MM-YYYYThh:mm:ss" />
+            </div>
+        </div>
+    </header>
+    <div class="container side-collapse-container">
+        <div class="row" style=" margin-top:100px ">
+            <div class="col-md-12">
+                <h1 align="center" style="background-color:greenyellow">RAJDHANI</h1>
+                <table align="center" border="1" cellpadding="0" cellspacing="0" style="        border-collapse: collapse;
+        background-color: antiquewhite;
+        font-weight: bold" width="100%">
+                    <tr>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default" onclick="BidNumberPopup()" data-toggle="modal" data-target="#bidModel">1</button>
+                                <div class="tooltip">Rate Ratio : 1 - 100</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">100</button>
+                                <div class="tooltip">Rate Ratio : 1 - 100</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">1</button>
+                                <div class="tooltip">Rate Ratio : 1 - 100</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">3</button>
+                                <div class="tooltip">Rate Ratio : 1 - 100</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">7</button>
+                                <div class="tooltip">Rate Ratio : 1 - 600</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">6</button>
+                                <div class="tooltip">Rate Ratio : 1 - 700</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">5</button>
+                                <div class="tooltip">Rate Ratio : 1 - 700</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">51</button>
+                                <div class="tooltip">Rate Ratio : 1 - 800</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">41</button>
+                                <div class="tooltip">Rate Ratio : 1 - 1000</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">31</button>
+                                <div class="tooltip">Rate Ratio : 1 - 80</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">21</button>
+                                <div class="tooltip">Rate Ratio : 1 - 10</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">15</button>
+                                <div class="tooltip">Rate Ratio : 1 - 80</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">14</button>
+                                <div class="tooltip">Rate Ratio : 1 - 90</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper" onclick="BidNumber()">
+                                <button class="btn btn-default">3</button>
+                                <div class="tooltip">Rate Ratio : 1 - 10</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">2</button>
+                                <div class="tooltip">Rate Ratio : 1 - 1000</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="btn btn-default">11</button>
+                                <div class="tooltip">Rate Ratio : 1 - 10000</div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <hr style="width:10px;" />
+        <div class="row" style="display:none;" id="dvResults">
+            <div class="col-md-12">
+                <table style="width:100%">
+                    <tr>
+                        <th>Bid Number</th>
+                        <th>Quoted Amount</th>
+                        <th>Rate Ratio</th>
+                        <th>Lottery Amount</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>20</td>
+                        <td>1-100</td>
+                        <td>200</td>
+                        <td>Delete</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="modal" tabindex="-1" role="dialog" id="bidModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Quote Bid</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Total Wallet Amount: 1000 points</h4>
+                        <label class="control-label">Selected Number : 3 &nbsp;&nbsp;&nsp;&nsp;Rate Ratio : 1-100</label> <br />
+                        <input type="text" placeholder="Number of bids" class="form-control" /><br />
+                        <label class="control-label">Total Amount : 20</label><br />
+                        <label class="control-label">Balance Amount : 980 points</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnSave" onclick="SaveBid()" class="btn btn-primary">Save Bid</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/Scripts/jquery.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var sideslider = $('[data-toggle=collapse-side]');
+            var sel = sideslider.attr('data-target');
+            var sel2 = sideslider.attr('data-target-2');
+            sideslider.click(function (event) {
+                $(sel).toggleClass('in');
+                $(sel2).toggleClass('out');
+            });
+
+        });
+        function BidNumberPopup() {
+            $("#bidModal").modal("show");
+        }
+        function SaveBid() {
+            $('#bidModal').modal('hide');
+            $("#dvResults").css("display", "block");
+        }
+    </script>
+
+</body>
+</html>
